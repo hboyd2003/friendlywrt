@@ -73,7 +73,7 @@ function init_network() {
 	uci commit network
 }
 
-function init_nft-qos() {
+function init_nft_qos() {
 	uci set nft-qos.default=default
 	uci set nft-qos.default.limit_enable='0'
 	uci set nft-qos.default.limit_mac_enable='0'
@@ -236,9 +236,9 @@ function add_static_host() {
 
 HOSTNAME="FriendlyWrt"
 
-if [ "${1,,}" = "all" ]; then
+if [ "${1}" = "all" ]; then
 	init_network
-	init_nft-qos
+	init_nft_qos
 	init_firewall_ipv6
 	init_firewall
 	init_system
