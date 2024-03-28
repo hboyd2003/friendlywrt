@@ -203,14 +203,18 @@ function clean_fstab() {
 
 function update_ntp_server() {
 	local def_pool="openwrt.pool.ntp.org"
+	local ntps="$(uci -q get system.ntp.server)"
 
-	[ "$(uci -q get ntpclient.@ntpserver[0].hostname)" = "0.${def_pool}" ] && \
-		uci set ntpclient.@ntpserver[0].hostname="time.apple.com"
-	[ "$(uci -q get ntpclient.@ntpserver[1].hostname)" = "1.${def_pool}" ] && \
-		uci set ntpclient.@ntpserver[1].hostname="ntp.tencent.com"
-	[ "$(uci -q get ntpclient.@ntpserver[2].hostname)" = "2.${def_pool}" ] && \
-		uci set ntpclient.@ntpserver[2].hostname="time.cloudflare.com"
-	uci commit ntpclient
+	[ "${ntps}" = "${ntps#0\.${def_pool}}" ] && return 0
+
+	while uci -q del system.ntp.server; do true; done
+	uci -q batch <<-EOF
+		add_list system.ntp.server="time.apple.com"
+		add_list system.ntp.server="ntp.tencent.com"
+		add_list system.ntp.server="time.cloudflare.com"
+		add_list system.ntp.server="0.${def_pool}"
+		commit system.ntp
+	EOF
 }
 
 # ---------------------------------------------------------
