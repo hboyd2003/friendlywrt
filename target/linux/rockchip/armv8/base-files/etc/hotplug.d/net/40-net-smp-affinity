@@ -127,13 +127,5 @@ friendlyelec,nanopc-t6)
 	set_interface_core 40 "xhci-hcd:usb7"
 	set_interface_rps "fe" "wlan0"
 	;;
-friendlyelec,nanopi-r6c)
-	set_interface_core 40 "eth0"
-	echo fe > /sys/class/net/eth0/queues/rx-0/rps_cpus
-	set_interface_core 10 "eth1-0"
-	set_interface_core 20 "eth1-16"
-	set_interface_core 20 "eth1-18"
-	echo fe > /sys/class/net/eth1/queues/rx-0/rps_cpus
-	;;
 esac
 
